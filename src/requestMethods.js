@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:4000/shopville/"
+const BASE_URL = "https://shopville-server.onrender.com/shopville/"
 const TOKEN = localStorage.getItem('access_token');
 // console.log(TOKEN)
 export const publicRequest = axios.create({

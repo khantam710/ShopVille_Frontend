@@ -166,7 +166,7 @@ const Wishlist = () => {
                                 <Tooltip id="my-tooltip" />
 
                                 <Icon data-tooltip-id="my-tooltip" data-tooltip-content="View">
-                                    <Link to={`/product/${item._id}`}>
+                                    <Link to={`/product/${item.prodID}`}>
                                         <VisibilityIcon/>
                                     </Link>
                                 </Icon>

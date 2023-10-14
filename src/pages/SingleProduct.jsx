@@ -191,29 +191,24 @@ const SingleProduct = () => {
     const existID = cartProducts.find(item => item.productID === prodID)
     const existColor = cartProducts.find(item => item.color === color)
     const existSize = cartProducts.find(item => item.size === size)
+    
     const handleCart = async () => {
-     
-        if(!userID){
-            setTimeout(()=>{
-               navigate('/login') 
-            },2000)
-            notifyLog()
-        }
-        else{
-            if (existID && existColor && existSize) {
-                notifyMatch()
-            }
-    
-            else {
-                dispath(addtocart(payload))
-                // dispath(addtocart({ payload, quantity, size, color }))
-                notify()
+        if (!userID) {
+            setTimeout(() => {
+                navigate('/login');
+            }, 2000);
+            notifyLog();
+        } else {
+            const isProductInCart = cartProducts.some(item => item.productID === prodID);
+            if (isProductInCart) {
+                notifyMatch();
+            } else {
+                dispath(addtocart(payload));
+                notify();
             }
         }
-
+    };
     
-
-    }
 
     return (
         <Container>

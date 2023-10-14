@@ -31,7 +31,7 @@ const Products = ({ cat, sort, filters }) => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const res = await axios.get(cat ? `http://localhost:4000/shopville/product/all?category=${cat}` : "http://localhost:4000/shopville/product/all");
+        const res = await axios.get(cat ? `https://shopville-server.onrender.com/shopville/product/all?category=${cat}` : "https://shopville-server.onrender.com/shopville/product/all");
         setProducts(res.data.data)
       } catch (error) {
         console.error(error)

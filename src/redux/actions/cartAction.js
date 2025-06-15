@@ -60,32 +60,39 @@ export const checkout = createAsyncThunk("checkout", async (payload,{rejectWithV
     try {
         const result = response.data.data
         // console.log(result)
-        const options = {
-            key: key.data.key, // Enter the Key ID generated from the Dashboard
-            amount: result.order.amount * 100, // Amount is in currency sub-units. Default currency is INR. Hence, 50000 refers to 50000 paise
-            currency: "INR",
-            name: "Shopville",
-            description: "Razorpay Transaction",
-            image: "https://cdn5.vectorstock.com/i/1000x1000/84/09/sv-letter-logo-design-with-shopping-bag-icon-vector-35768409.jpg",
-            order_id: result.order.id, //Pass the `id` obtained in the response of Step 1
-            userID: result.userID,
-            callback_url: "https://shopville-server.onrender.com/shopville/checkout/verify",
-            notes: {
-                address: "Shopville pvt ltd"
-            },
-            theme: {
-                color: "#4c0a42"
-            },
-            //  handler: function (response) {
-            // // window.location.href = `https://vocal-macaron-fbb37c.netlify.app/order-success?payment_id=${response.razorpay_payment_id}`;
-            // localStorage.setItem("paymentSuccess", "true");
-            // // Redirect to orders page
-            //  window.location.href = "https://vocal-macaron-fbb37c.netlify.app/orders";
-            //  }
-        };
-        var razor = new window.Razorpay(options);
+       const options = {
+  key: key.data.key,
+  amount: result.order.amount * 100,
+  currency: "INR",
+  name: "Shopville",
+  description: "Razorpay Transaction",
+  image: "https://cdn5.vectorstock.com/i/1000x1000/84/09/sv-letter-logo-design-with-shopping-bag-icon-vector-35768409.jpg",
+  order_id: result.order.id,
+  notes: {
+    address: "Shopville pvt ltd"
+  },
+  theme: {
+    color: "#4c0a42"
+  },
+  handler: function (response) {
+    // ✅ this gets triggered ONLY if payment is successful
+    console.log("Payment successful:", response);
+    localStorage.setItem("payment_id", response.razorpay_payment_id);
+    
+    // ✅ Redirect to orders page after successful payment
+    window.location.assign("https://vocal-macaron-fbb37c.netlify.app/orders");
+  },
+  prefill: {
+    name: payload.name,
+    email: payload.email,
+    contact: payload.phone
+  }
+};
 
-        razor.open();
+const razor = new window.Razorpay(options);
+razor.open();
+
+
         // console.log(result, "result")
         return result;
     } catch (error) {

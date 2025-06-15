@@ -77,7 +77,10 @@ export const checkout = createAsyncThunk("checkout", async (payload,{rejectWithV
                 color: "#4c0a42"
             },
              handler: function (response) {
-            window.location.href = `https://vocal-macaron-fbb37c.netlify.app/order-success?payment_id=${response.razorpay_payment_id}`;
+            // window.location.href = `https://vocal-macaron-fbb37c.netlify.app/order-success?payment_id=${response.razorpay_payment_id}`;
+            localStorage.setItem("paymentSuccess", "true");
+            // Redirect to orders page
+             window.location.href = "https://vocal-macaron-fbb37c.netlify.app/orders";
              }
         };
         var razor = new window.Razorpay(options);

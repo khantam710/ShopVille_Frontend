@@ -19,6 +19,7 @@ import CleverTap from 'clevertap-web-sdk';
 
 function App() {
 
+  CleverTap.init({ accountId: 'WWW-869-947Z', clearCookie: false, override: false,isOUL: false});
   CleverTap.spa = true;
   console.log('CleverTap initialized');
 
@@ -30,38 +31,6 @@ function App() {
     dispatch(getwishByUser(user?._id))
     dispatch(getcart(user?._id))
   }, [user])
-
-
- // CleverTap onUserLogin and event tracking
-useEffect(() => {
-  if (
-    user &&
-    typeof window !== 'undefined' &&
-    window.clevertap &&
-    user.email &&
-    user._id
-  ) {
-    // 👇 Place override BEFORE onUserLogin
-    window.clevertap.override = false;
-
-    // 👇 Push user profile
-    window.clevertap.onUserLogin.push({
-      Site: {
-        Name: user.name || "User",
-        Identity: user._id,
-        Email: user.email,
-        Phone: user.phone || "",
-        // Gender: user.gender || "",
-      },
-    });
-
-    // 👇 Add slight delay to ensure identity sets before event
-    setTimeout(() => {
-      window.clevertap.event.push("User Logged In");
-    }, 1000); // 1 second delay is enough
-  }
-}, [user]);
-
 
   return (
     <>

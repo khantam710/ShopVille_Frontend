@@ -21,15 +21,6 @@ function App() {
 
   CleverTap.spa = true;
   console.log('CleverTap initialized');
-  
-  // const userdata = useSelector(state => state.user.currentUser)
-  const dispatch = useDispatch()
-  const user = useSelector(state => state.user.currentUser)
-
-  useEffect(() => {
-    dispatch(getwishByUser(user?._id))
-    dispatch(getcart(user?._id))
-  }, [user])
 
  // CleverTap onUserLogin and event tracking
 useEffect(() => {
@@ -60,6 +51,16 @@ useEffect(() => {
     }, 1000); // 1 second delay is enough
   }
 }, [user]);
+
+   // const userdata = useSelector(state => state.user.currentUser)
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user.currentUser)
+
+  useEffect(() => {
+    dispatch(getwishByUser(user?._id))
+    dispatch(getcart(user?._id))
+  }, [user])
+
 
   
   return (

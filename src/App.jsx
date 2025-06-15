@@ -19,6 +19,16 @@ import CleverTap from 'clevertap-web-sdk';
 
 function App() {
 
+  // const userdata = useSelector(state => state.user.currentUser)
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user.currentUser)
+
+  useEffect(() => {
+    dispatch(getwishByUser(user?._id))
+    dispatch(getcart(user?._id))
+  }, [user])
+
+
  useEffect(() => {
     if (typeof window !== 'undefined' && window.clevertap) {
       CleverTap.init({
@@ -51,15 +61,6 @@ function App() {
       }, 1000);
     }
   }, [user]);
-
-   // const userdata = useSelector(state => state.user.currentUser)
-  const dispatch = useDispatch()
-  const user = useSelector(state => state.user.currentUser)
-
-  useEffect(() => {
-    dispatch(getwishByUser(user?._id))
-    dispatch(getcart(user?._id))
-  }, [user])
 
   return (
     <>

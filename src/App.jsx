@@ -46,7 +46,7 @@ function App() {
           Identity: user._id,
           Email: user.email,
           Phone: user.phone || "",
-          Gender: user.gender || "",
+          // Gender: user.gender || "",
         },
       });
 

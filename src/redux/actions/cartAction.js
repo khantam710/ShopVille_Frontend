@@ -69,7 +69,7 @@ export const checkout = createAsyncThunk("checkout", async (payload,{rejectWithV
             image: "https://cdn5.vectorstock.com/i/1000x1000/84/09/sv-letter-logo-design-with-shopping-bag-icon-vector-35768409.jpg",
             order_id: result.order.id, //Pass the `id` obtained in the response of Step 1
             userID: result.userID,
-            callback_url: "http://localhost:4000/shopville/checkout/verify",
+            callback_url: "https://shopville-server.onrender.com/shopville/checkout/verify",
             notes: {
                 address: "Shopville pvt ltd"
             },

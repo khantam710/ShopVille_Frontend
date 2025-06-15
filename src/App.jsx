@@ -15,10 +15,13 @@ import { getwishByUser } from './redux/actions/wishAction';
 import { getcart } from './redux/actions/cartAction';
 import { useEffect } from 'react';
 import Orders from './pages/Orders';
-
-
+import CleverTap from 'clevertap-web-sdk';
 
 function App() {
+
+  CleverTap.spa = true;
+  console.log('CleverTap initialized');
+  
   // const userdata = useSelector(state => state.user.currentUser)
   const dispatch = useDispatch()
   const user = useSelector(state => state.user.currentUser)
@@ -27,6 +30,30 @@ function App() {
     dispatch(getwishByUser(user?._id))
     dispatch(getcart(user?._id))
   }, [user])
+
+  // CleverTap onUserLogin and event tracking
+  useEffect(() => {
+    if (
+      user &&
+      typeof window !== 'undefined' &&
+      window.clevertap &&
+      user.email &&
+      user._id
+    ) {
+      window.clevertap.onUserLogin.push({
+        Site: {
+          Name: user.name || "User",
+          Identity: user._id,
+          Email: user.email,
+          Phone: user.phone || "",
+          Gender: user.gender || "",
+        },
+      });
+
+      window.clevertap.event.push("User Logged In");
+    }
+  }, [user]);
+  
   return (
     <>
 

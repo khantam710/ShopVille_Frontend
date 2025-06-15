@@ -19,9 +19,38 @@ import CleverTap from 'clevertap-web-sdk';
 
 function App() {
 
-  CleverTap.init({ accountId: 'WWW-869-947Z', clearCookie: false, override: false,isOUL: false});
-  CleverTap.spa = true;
-  console.log('CleverTap initialized');
+ useEffect(() => {
+    if (typeof window !== 'undefined' && window.clevertap) {
+      CleverTap.init({
+        accountId: 'WWW-869-947Z',
+        region: 'eu1', // Make sure the region is correct
+        clearCookie: false,
+        override: false,
+        isOUL: false
+      });
+
+      CleverTap.spa = true;
+      CleverTap.enableDebug = true;
+      console.log('CleverTap initialized');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user && typeof window !== 'undefined' && window.clevertap) {
+      window.clevertap.onUserLogin.push({
+        "Site": {
+          "Name": user?.name || "User",
+          "Email": user?.email,
+          "Identity": user?._id,
+          "Phone": user?.phone || ""
+        }
+      });
+
+      setTimeout(() => {
+        window.clevertap.event.push("User Logged In");
+      }, 1000);
+    }
+  }, [user]);
 
    // const userdata = useSelector(state => state.user.currentUser)
   const dispatch = useDispatch()

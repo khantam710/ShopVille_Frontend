@@ -45,22 +45,22 @@ function App() {
     }
   }, []);
 
-  useEffect(() => {
-    if (user && typeof window !== 'undefined' && window.clevertap) {
-      window.clevertap.onUserLogin.push({
-        "Site": {
-          "Name": user?.name || "User",
-          "Email": user?.email,
-          "Identity": user?._id,
-          "Phone": user?.phone || ""
-        }
-      });
+  // useEffect(() => {
+  //   if (user && typeof window !== 'undefined' && window.clevertap) {
+  //     window.clevertap.onUserLogin.push({
+  //       "Site": {
+  //         "Name": user?.name || "User",
+  //         "Email": user?.email,
+  //         "Identity": user?._id,
+  //         "Phone": user?.phone || ""
+  //       }
+  //     });
 
-      setTimeout(() => {
-        window.clevertap.event.push("User Logged In");
-      }, 1000);
-    }
-  }, [user]);
+  //     setTimeout(() => {
+  //       window.clevertap.event.push("User Logged In");
+  //     }, 1000);
+  //   }
+  // }, [user]);
 
   return (
     <>

@@ -28,22 +28,26 @@ function App() {
     dispatch(getcart(user?._id))
   }, [user])
 
+clevertap.privacy.push({optOut: false}) // Set the flag to true, if the user of the device opts out of sharing their data
+clevertap.privacy.push({useIP: true})  // Set the flag to true, if the user agrees to share their IP data
+clevertap.init('WWW-869-947Z', 'eu1')
 
- useEffect(() => {
-    if (typeof window !== 'undefined' && window.clevertap) {
-      CleverTap.init({
-        accountId: 'WWW-869-947Z',
-        region: 'eu1', // Make sure the region is correct
-        clearCookie: false,
-        override: false,
-        isOUL: false
-      });
 
-      CleverTap.spa = true;
-      CleverTap.enableDebug = true;
-      console.log('CleverTap initialized');
-    }
-  }, []);
+ // useEffect(() => {
+ //    if (typeof window !== 'undefined' && window.clevertap) {
+ //      CleverTap.init({
+ //        accountId: 'WWW-869-947Z',
+ //        region: 'eu1', // Make sure the region is correct
+ //        clearCookie: false,
+ //        override: false,
+ //        isOUL: false
+ //      });
+
+ //      CleverTap.spa = true;
+ //      CleverTap.enableDebug = true;
+ //      console.log('CleverTap initialized');
+ //    }
+ //  }, []);
 
   // useEffect(() => {
   //   if (user && typeof window !== 'undefined' && window.clevertap) {
@@ -64,8 +68,6 @@ function App() {
 
   return (
     <>
-
-
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home />} />
@@ -80,12 +82,8 @@ function App() {
           <Route path='/cart' element={user !== null && Object.keys(user).length !== 0 ? <Cart /> : <Navigate to='/login' />} />
           <Route path='/wishlist' element={user !== null && Object.keys(user).length !== 0 ? < Wishlist /> : <Navigate to='/login' />} />
           <Route path='/orders' element={user !== null && Object.keys(user).length !== 0 ? <Orders /> : <Navigate to='/login' />} />
-
-
         </Routes>
-
       </BrowserRouter>
-
     </>
   )
 }

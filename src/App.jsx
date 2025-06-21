@@ -32,39 +32,23 @@ clevertap.privacy.push({optOut: false}) // Set the flag to true, if the user of 
 clevertap.privacy.push({useIP: true})  // Set the flag to true, if the user agrees to share their IP data
 clevertap.init('WWW-869-947Z', 'eu1')
 
+// Trigger CleverTap onUserLogin when user logs in
+  useEffect(() => {
+    if (user && Object.keys(user).length > 0 && typeof window !== 'undefined' && window.clevertap) {
+      window.clevertap.onUserLogin && window.clevertap.onUserLogin.push({
+        "Site": {
+          "Name": user.name || "",
+          "Identity": user._id || "",
+          "Email": user.email || "",
+          "Phone": user.phone || "", // Use full number with country code if available
+        }
+      });
 
- // useEffect(() => {
- //    if (typeof window !== 'undefined' && window.clevertap) {
- //      CleverTap.init({
- //        accountId: 'WWW-869-947Z',
- //        region: 'eu1', // Make sure the region is correct
- //        clearCookie: false,
- //        override: false,
- //        isOUL: false
- //      });
-
- //      CleverTap.spa = true;
- //      CleverTap.enableDebug = true;
- //      console.log('CleverTap initialized');
- //    }
- //  }, []);
-
-  // useEffect(() => {
-  //   if (user && typeof window !== 'undefined' && window.clevertap) {
-  //     window.clevertap.onUserLogin.push({
-  //       "Site": {
-  //         "Name": user?.name || "User",
-  //         "Email": user?.email,
-  //         "Identity": user?._id,
-  //         "Phone": user?.phone || ""
-  //       }
-  //     });
-
-  //     setTimeout(() => {
-  //       window.clevertap.event.push("User Logged In");
-  //     }, 1000);
-  //   }
-  // }, [user]);
+      // Optionally log login event
+      window.clevertap.event && window.clevertap.event.push("User Logged In");
+      console.log("CleverTap onUserLogin triggered");
+    }
+  }, [user]);
 
   return (
     <>

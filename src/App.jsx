@@ -57,9 +57,9 @@ clevertap.init('WWW-869-947Z', 'eu1')
         rejectButtonText: "No thanks",
         okButtonColor: "#F28046",
         askAgainTimeInSeconds: 5,
-        serviceWorkerPath: "/foo/my_sw.js", // 👈 replace with your correct path
+        serviceWorkerPath: "/clevertap_sw.js",
         serviceWorkerScope: "/",
-        notificationIcon: "https://yourdomain.com/icon.png" // optional icon
+        // notificationIcon: "https://yourdomain.com/icon.png" 
       });
 
       console.log("CleverTap: Push prompt displayed");

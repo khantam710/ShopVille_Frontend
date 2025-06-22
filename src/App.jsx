@@ -48,6 +48,21 @@ clevertap.init('WWW-869-947Z', 'eu1')
       // Optionally log login event
       window.clevertap.event && window.clevertap.event.push("User Logged In");
       console.log("CleverTap onUserLogin triggered");
+
+  // ✅ Show Push Permission Prompt
+      clevertap.notifications.push({
+        titleText: "Would you like to receive Push Notifications?",
+        bodyText: "We promise to only send you relevant content and give you updates on your transactions",
+        okButtonText: "Sign me up!",
+        rejectButtonText: "No thanks",
+        okButtonColor: "#F28046",
+        askAgainTimeInSeconds: 5,
+        serviceWorkerPath: "/foo/my_sw.js", // 👈 replace with your correct path
+        serviceWorkerScope: "/",
+        notificationIcon: "https://yourdomain.com/icon.png" // optional icon
+      });
+
+      console.log("CleverTap: Push prompt displayed");
     }
   }, [user]);
 

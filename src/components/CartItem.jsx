@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+ import React, { useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { mobile, tablet } from '../responsive'
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -11,31 +11,31 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 
-const Container = styled.div`
+const Container = styled.div
     ${mobile({ padding: '20px' })}
-`
-const Product = styled.div`
+
+const Product = styled.div
   display: flex;
   justify-content: space-between;
   ${mobile({ flexDirection: 'column' })}
 
-`
-const ProductDetail = styled.div`
+
+const ProductDetail = styled.div
 flex: 2;
 display: flex; 
 ${tablet({ flex: 3 })}
 
-`
-const Image = styled.img`
+
+const Image = styled.img
   width: 200px;
   height: 200px;
   object-fit: contain;
   ${mobile({ width: '130px', height: '140px' })}
   ${tablet({ width: '130px', height: '140px' })}
 
-`
 
-const Details = styled.div`
+
+const Details = styled.div
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -43,24 +43,24 @@ const Details = styled.div`
   gap:10px;
   ${mobile({ fontSize: '15px' })}
 
-`
-const ProductName = styled.span``
+
+const ProductName = styled.span`
 
 
-const ProductColor = styled.div`
+const ProductColor = styled.div
   display: flex;
-`
 
-const Color = styled.div`
+
+const Color = styled.div
   width: 20px;
   height: 20px;
   border-radius: 50%;
   background-color: ${props => props.color};
   margin-left: 10px;
-`
-const ProductSize = styled.span``
 
-const PriceDetail = styled.div`
+const ProductSize = styled.span`
+
+const PriceDetail = styled.div
   flex: 2;
   display: flex;
   align-items: center;
@@ -68,8 +68,8 @@ const PriceDetail = styled.div`
   flex-direction: column;
   ${mobile({ flexDirection: 'row' })}
 
-`
-const ProductUpdate = styled.div`
+
+const ProductUpdate = styled.div
   display: flex;
   align-items: center;
   margin-bottom: 20px;
@@ -77,14 +77,14 @@ const ProductUpdate = styled.div`
   width: 200px;
   justify-content: space-between;
   ${mobile({ margin: '0px',justifyContent: 'space-between' , flexDirection: 'row-reverse'})}
-`
+
   
-const ProductQuantity = styled.div`
+const ProductQuantity = styled.div
   display: flex;
   align-items: center;
   justify-content: center;
-`
-const Quantity = styled.div`
+
+const Quantity = styled.div
   border: 1px solid gray;
   height: 40px;
   width: 40px;
@@ -96,15 +96,15 @@ const Quantity = styled.div`
   border-radius: 10px;
   ${mobile({ margin: '0px 10px ' })}
 
-`
-const ProductPrice = styled.div`
+
+const ProductPrice = styled.div
   font-size: 24px;
-`
-const Hr = styled.hr`
+
+const Hr = styled.hr
   background-color: #e1e1e1;
   border: none;
   height: 2px;
-  `
+  
 
 const CartItem = ({ item }) => {
 
@@ -154,36 +154,9 @@ const CartItem = ({ item }) => {
   useEffect(()=>{
     setPrice(quan*(item.price/item.quantity))
     dispatch(updatecart(updatePayload))
-},[quan])
 
-// Quantity update event
 
-const quanHandler = useCallback((operation) => {
-  let newQuantity = quan;
-
-  if (operation === 'add') {
-    newQuantity = quan + 1;
-    setQuan(newQuantity);
-  } else if (operation === 'remove' && quan > 1) {
-    newQuantity = quan - 1;
-    setQuan(newQuantity);
-  }
-
-  if (window.clevertap) {
-    window.clevertap.event.push("Quantity Updated in Cart", {
-      "Product ID": item.productID,
-      "Name": item.title,
-      "Category": item.category,
-      "Updated Quantity": newQuantity,
-      "Color": item.color,
-      "Size": item.size,
-      "Price per Unit": item.price / item.quantity,
-      "Image": item.image
-    });
-    console.log("CleverTap: Quantity Updated in Cart event sent");
-  }
-}, [quan, item]);
-
+  },[quan])
 
 // Remove item from cart event
 const handleRemoveFromCart = () => {
@@ -209,7 +182,7 @@ const handleRemoveFromCart = () => {
     <Container>
       <Product>
         <ProductDetail>
-          <Link to={`/product/${item.productID}`}>
+          <Link to={/product/${item.productID}}>
             <Image src={item.image} />
           </Link>
           <Details>

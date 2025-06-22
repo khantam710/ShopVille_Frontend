@@ -147,21 +147,48 @@ const SingleProduct = () => {
     const [color, setColor] = useState('')
     const [size, setSize] = useState('')
 
-
-
     useEffect(() => {
-        const getProduct = async () => {
-            try {
-                const res = await publicRequest.get(`/product/single/${prodID}`)
-                setProduct(res.data.data);
-                setColor(res.data.data.color[0])
-                setSize(res.data.data.size[0])
-            } catch (error) {
-                console.error(error)
-            }
+      const getProduct = async () => {
+        try {
+          const res = await publicRequest.get(`/product/single/${prodID}`);
+          const productData = res.data.data;
+          setProduct(productData);
+          setColor(productData.color[0]);
+          setSize(productData.size[0]);
+    
+          // Track product view in CleverTap
+          if (window.clevertap) {
+            window.clevertap.event.push("Product Viewed", {
+              "Product ID": productData._id,
+              "Name": productData.title,
+              "Category": productData.category,
+              "Price": productData.price,
+              "Image": productData.image
+            });
+            console.log("CleverTap: Product Viewed event sent");
+          }
+    
+        } catch (error) {
+          console.error("Error fetching product:", error);
         }
-        getProduct()
-    }, [prodID])
+      };
+      getProduct();
+    }, [prodID]);
+
+
+    // useEffect(() => {
+    //     const getProduct = async () => {
+    //         try {
+    //             const res = await publicRequest.get(`/product/single/${prodID}`)
+    //             setProduct(res.data.data);
+    //             setColor(res.data.data.color[0])
+    //             setSize(res.data.data.size[0])
+    //         } catch (error) {
+    //             console.error(error)
+    //         }
+    //     }
+    //     getProduct()
+    // }, [prodID])
     // console.log(product)
 
     const handleQuantity = (q) => {

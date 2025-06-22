@@ -118,11 +118,12 @@ const Login = () => {
   }
 
 
-  useEffect(()=>{
-    if(currentUser!==null && Object.keys(currentUser).length!==0){
-      navigate('/')
-    }
-  },[currentUser])
+useEffect(() => {
+  if (currentUser && Object.keys(currentUser).length !== 0) {
+    navigate('/home'); // 👈 redirecting to /home instead of /
+  }
+}, [currentUser]);
+
   return (
     <Container>
       <Wrapper>

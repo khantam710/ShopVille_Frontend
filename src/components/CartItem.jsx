@@ -113,27 +113,67 @@ const CartItem = ({ item }) => {
   const [quan, setQuan] = useState(item.quantity);
   const [itemPrice, setPrice] = useState(item.price);
 
-  const updatePayload = {
-    ...item,
-    quantity: quan,
-    price: itemPrice
-  };
+   // Updated price whenever quantity changes
+  useEffect(() => {
+    const newPrice = quan * (item.price / item.quantity);
+    setPrice(newPrice);
 
-  const quanHandler = useCallback((operation) => {
-    if (operation === 'add') {
-      setQuan(quan + 1);
-    } else {
-      if (quan > 1) {
-        setQuan(quan - 1);
-      }
+    const updatePayload = {
+      ...item,
+      quantity: quan,
+      price: newPrice
+    };
+
+    dispatch(updatecart(updatePayload));
+
+    // Track quantity update
+    if (window.clevertap) {
+      window.clevertap.event.push("Quantity Updated in Cart", {
+        "Product ID": item.productID,
+        "Name": item.title,
+        "Category": item.category,
+        "Updated Quantity": quan,
+        "Color": item.color,
+        "Size": item.size,
+        "Price per Unit": item.price / item.quantity,
+        "Total Price": newPrice,
+        "Image": item.image
+      });
+      console.log("CleverTap: Quantity Updated in Cart event sent");
     }
   }, [quan]);
 
-  useEffect(() => {
-    setPrice(quan * (item.price / item.quantity));
-    dispatch(updatecart(updatePayload));
+  // Quantity increment/decrement handler
+  const quanHandler = useCallback((operation) => {
+    if (operation === 'add') {
+      setQuan(prev => prev + 1);
+    } else if (operation === 'remove' && quan > 1) {
+      setQuan(prev => prev - 1);
+    }
   }, [quan]);
 
+  // const updatePayload = {
+  //   ...item,
+  //   quantity: quan,
+  //   price: itemPrice
+  // };
+
+  // const quanHandler = useCallback((operation) => {
+  //   if (operation === 'add') {
+  //     setQuan(quan + 1);
+  //   } else {
+  //     if (quan > 1) {
+  //       setQuan(quan - 1);
+  //     }
+  //   }
+  // }, [quan]);
+
+  // useEffect(() => {
+  //   setPrice(quan * (item.price / item.quantity));
+  //   dispatch(updatecart(updatePayload));
+  // }, [quan]);
+
+// Remove from Cart Event
   const handleRemoveFromCart = () => {
     dispatch(deletecart({ _id: item._id }));
 

@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Home from './pages/Home';
 import ProductList from './pages/ProductList';
 import SingleProduct from './pages/SingleProduct';
-import PaymentSucces from './pages/PaymentSuccess';
+import PaymentSuccess from './pages/PaymentSuccess';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Cart from './pages/Cart';

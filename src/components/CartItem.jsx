@@ -158,6 +158,26 @@ const CartItem = ({ item }) => {
 
   },[quan])
 
+// Remove item from cart event
+const handleRemoveFromCart = () => {
+  dispatch(deletecart({ _id: item._id }));
+
+  if (window.clevertap) {
+    window.clevertap.event.push("Removed from Cart", {
+      "Product ID": item.productID,
+      "Name": item.title,
+      "Category": item.category,
+      "Price": item.price,
+      "Quantity": item.quantity,
+      "Color": item.color,
+      "Size": item.size,
+      "Image": item.image
+    });
+    console.log("CleverTap: Removed from Cart event sent");
+  }
+};
+
+
   return (
     <Container>
       <Product>
@@ -181,7 +201,9 @@ const CartItem = ({ item }) => {
             <RemoveIcon onClick={() => quanHandler('remove')} style={{ cursor: 'pointer' }} />
             </ProductQuantity>
       
-            <DeleteIcon style={{  cursor: 'pointer' }} onClick={() =>  dispatch(deletecart({_id: item._id}))} />
+{/*             <DeleteIcon style={{  cursor: 'pointer' }} onClick={() =>  dispatch(deletecart({_id: item._id}))} /> */}
+        <DeleteIcon style={{ cursor: 'pointer' }} onClick={handleRemoveFromCart}/>
+
           </ProductUpdate>
 
           <ProductPrice>₹ {itemPrice}</ProductPrice>

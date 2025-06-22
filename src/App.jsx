@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Home from './pages/Home';
 import ProductList from './pages/ProductList';
 import SingleProduct from './pages/SingleProduct';
+import SingleProduct from './pages/PaymentSuccess';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Cart from './pages/Cart';
@@ -60,7 +61,7 @@ clevertap.init('WWW-869-947Z', 'eu1')
           <Route path='/products' element={<ProductList />} />
           <Route path='/products/:category' element={<ProductList />} />
           <Route path='/product/:prodID' element={<SingleProduct/>} />
-          <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/payment-success" element={<PaymentSuccess/>} />
           {/* <Route path='/products' element={user !== null && Object.keys(user).length !== 0 ? <ProductList /> : <Navigate to='/' />} />
           <Route path='/products/:category' element={user !== null && Object.keys(user).length !== 0 ? <ProductList /> : <Navigate to='/' />} />
           <Route path='/product/:prodID' element={user !== null && Object.keys(user).length !== 0 ? <SingleProduct /> : <Navigate to='/' />} /> */}

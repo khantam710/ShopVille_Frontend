@@ -218,29 +218,58 @@ const SingleProduct = () => {
     const existID = cartProducts.find(item => item.productID === prodID)
     const existColor = cartProducts.find(item => item.color === color)
     const existSize = cartProducts.find(item => item.size === size)
-    const handleCart = async () => {
-     
-        if(!userID){
-            setTimeout(()=>{
-               navigate('/login') 
-            },2000)
-            notifyLog()
-        }
-        else{
-            if (existID && existColor && existSize) {
-                notifyMatch()
-            }
-    
-            else {
-                dispath(addtocart(payload))
-                // dispath(addtocart({ payload, quantity, size, color }))
-                notify()
-            }
-        }
+// Handle cart Logic
 
-    
+const handleCart = async () => {
+  if (!userID) {
+    setTimeout(() => {
+      navigate('/login');
+    }, 2000);
+    notifyLog();
+  } else {
+    if (existID && existColor && existSize) {
+      notifyMatch();
+    } else {
+      // Add to cart in Redux
+      dispath(addtocart(payload));
+      notify();
 
+      // CleverTap: Track "Added to Cart" event
+      if (window.clevertap) {
+        window.clevertap.event.push("Add to Cart", {
+          "Product ID": product._id,
+          "Name": product.title,
+          "Category": product.category,
+          "Price": product.price,
+          "Quantity": quantity,
+          "Color": color,
+          "Size": size,
+          "Image": product.image
+        });
+        console.log("CleverTap: Added to Cart event sent");
+      }
     }
+  }
+};
+
+// const handleCart = async () => {
+//         if(!userID){
+//             setTimeout(()=>{
+//                navigate('/login') 
+//             },2000)
+//             notifyLog()
+//         }
+//         else{
+//             if (existID && existColor && existSize) {
+//                 notifyMatch()
+//             }
+//             else {
+//                 dispath(addtocart(payload))
+//                 // dispath(addtocart({ payload, quantity, size, color }))
+//                 notify()
+//             }
+//         }
+//     }
 
     return (
         <Container>

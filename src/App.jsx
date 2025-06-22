@@ -9,7 +9,6 @@ import PaymentSuccess from './pages/PaymentSuccess';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Cart from './pages/Cart';
-// import Success from './components/Success';
 import Wishlist from './pages/Wishlist';
 import { useSelector, useDispatch } from 'react-redux'
 import { getwishByUser } from './redux/actions/wishAction';
@@ -19,21 +18,43 @@ import Orders from './pages/Orders';
 import CleverTap from 'clevertap-web-sdk';
 
 function App() {
-
-  // const userdata = useSelector(state => state.user.currentUser)
   const dispatch = useDispatch()
   const user = useSelector(state => state.user.currentUser)
 
+  // 👉 Fetch cart and wishlist
   useEffect(() => {
     dispatch(getwishByUser(user?._id))
     dispatch(getcart(user?._id))
   }, [user])
 
-clevertap.privacy.push({optOut: false}) // Set the flag to true, if the user of the device opts out of sharing their data
-clevertap.privacy.push({useIP: true})  // Set the flag to true, if the user agrees to share their IP data
-clevertap.init('WWW-869-947Z', 'eu1')
+  // 👉 CleverTap initialization
+  clevertap.privacy.push({ optOut: false });
+  clevertap.privacy.push({ useIP: true });
+  clevertap.init('WWW-869-947Z', 'eu1');
 
-// Trigger CleverTap onUserLogin when user logs in
+  // ✅ Register Service Worker (once on mount)
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.ready
+        .then(registration => {
+          return registration.unregister();
+        })
+        .then(success => {
+          if (success) {
+            console.log('Previous service worker unregistered successfully.');
+          }
+          return navigator.serviceWorker.register('/clevertap_sw.js', { scope: '/' });
+        })
+        .then(registration => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(error => {
+          console.error('Service Worker registration failed:', error);
+        });
+    }
+  }, []);
+
+  // 👉 On User Login, push to CleverTap + show push prompt
   useEffect(() => {
     if (user && Object.keys(user).length > 0 && typeof window !== 'undefined' && window.clevertap) {
       window.clevertap.onUserLogin && window.clevertap.onUserLogin.push({
@@ -41,15 +62,14 @@ clevertap.init('WWW-869-947Z', 'eu1')
           "Name": user.name || "",
           "Identity": user._id || "",
           "Email": user.email || "",
-          "Phone": user.phone || "", // Use full number with country code if available
+          "Phone": user.phone || "",
         }
       });
 
-      // Optionally log login event
       window.clevertap.event && window.clevertap.event.push("User Logged In");
       console.log("CleverTap onUserLogin triggered");
 
-  // ✅ Show Push Permission Prompt
+      // ✅ Show push permission prompt
       clevertap.notifications.push({
         titleText: "Would you like to receive Push Notifications?",
         bodyText: "We promise to only send you relevant content and give you updates on your transactions",
@@ -59,7 +79,7 @@ clevertap.init('WWW-869-947Z', 'eu1')
         askAgainTimeInSeconds: 5,
         serviceWorkerPath: "/clevertap_sw.js",
         serviceWorkerScope: "/",
-        // notificationIcon: "https://yourdomain.com/icon.png" 
+        // notificationIcon: "https://yourdomain.com/icon.png" // optional
       });
 
       console.log("CleverTap: Push prompt displayed");
@@ -75,18 +95,15 @@ clevertap.init('WWW-869-947Z', 'eu1')
           <Route path='/login' element={<Login />} />
           <Route path='/products' element={<ProductList />} />
           <Route path='/products/:category' element={<ProductList />} />
-          <Route path='/product/:prodID' element={<SingleProduct/>} />
-          <Route path="/payment-success" element={<PaymentSuccess/>} />
-          {/* <Route path='/products' element={user !== null && Object.keys(user).length !== 0 ? <ProductList /> : <Navigate to='/' />} />
-          <Route path='/products/:category' element={user !== null && Object.keys(user).length !== 0 ? <ProductList /> : <Navigate to='/' />} />
-          <Route path='/product/:prodID' element={user !== null && Object.keys(user).length !== 0 ? <SingleProduct /> : <Navigate to='/' />} /> */}
-          <Route path='/cart' element={user !== null && Object.keys(user).length !== 0 ? <Cart /> : <Navigate to='/login' />} />
-          <Route path='/wishlist' element={user !== null && Object.keys(user).length !== 0 ? < Wishlist /> : <Navigate to='/login' />} />
-          <Route path='/orders' element={user !== null && Object.keys(user).length !== 0 ? <Orders /> : <Navigate to='/login' />} />
+          <Route path='/product/:prodID' element={<SingleProduct />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path='/cart' element={user ? <Cart /> : <Navigate to='/login' />} />
+          <Route path='/wishlist' element={user ? <Wishlist /> : <Navigate to='/login' />} />
+          <Route path='/orders' element={user ? <Orders /> : <Navigate to='/login' />} />
         </Routes>
       </BrowserRouter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

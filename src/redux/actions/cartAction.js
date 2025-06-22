@@ -93,10 +93,14 @@ export const updatecart = createAsyncThunk("updatecart", async (payload, {reject
 
 export const checkout = createAsyncThunk("checkout", async (payload, { rejectWithValue }) => {
   try {
+    // Get Razorpay key
     const key = await axios.get(`${import.meta.env.VITE_BASE_URL}/checkout/getkey`);
+
+    // Create order on backend
     const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/checkout/payment`, payload);
     const result = response.data.data;
 
+    // Razorpay options
     const options = {
       key: key.data.key,
       amount: result.order.amount * 100,
@@ -105,33 +109,31 @@ export const checkout = createAsyncThunk("checkout", async (payload, { rejectWit
       description: "Razorpay Transaction",
       image: "https://cdn5.vectorstock.com/i/1000x1000/84/09/sv-letter-logo-design-with-shopping-bag-icon-vector-35768409.jpg",
       order_id: result.order.id,
+      handler: function (response) {
+        // Redirect to payment-success route with payment/order IDs
+        const paymentId = response.razorpay_payment_id;
+        const orderId = response.razorpay_order_id;
+        window.location.href = `/payment-success?payment_id=${paymentId}&order_id=${orderId}`;
+      },
       notes: {
-        address: "Shopville pvt ltd",
+        address: "Shopville pvt ltd"
       },
       theme: {
-        color: "#4c0a42",
-      },
-      // 👇 This is the key change!
-      handler: function (response) {
-        // You can store or verify these details here if needed
-        const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = response;
-
-        // Redirect the user to a success page (custom route in your React app)
-        window.location.href = `/payment-success?payment_id=${razorpay_payment_id}&order_id=${razorpay_order_id}`;
-      },
-      // Backend verification (optional if you're handling via handler)
-      callback_url: "https://shopville-server.onrender.com/shopville/checkout/verify",
+        color: "#4c0a42"
+      }
     };
 
     const razor = new window.Razorpay(options);
     razor.open();
 
     return result;
+
   } catch (error) {
-    console.log(error);
+    console.error("Checkout Error:", error);
     return rejectWithValue(error);
   }
 });
+
 
 
 

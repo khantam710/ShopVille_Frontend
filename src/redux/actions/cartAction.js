@@ -48,91 +48,49 @@ export const updatecart = createAsyncThunk("updatecart", async (payload, {reject
     }
 })
 
-// export const checkout = createAsyncThunk("checkout", async (payload,{rejectWithValue})=>{
-//     // console.log("heelo")
-//     const key = await axios.get(`${import.meta.env.VITE_BASE_URL}/checkout/getkey`)
-//     // console.log(key.data.key,"key")
-//     // console.log("world")
+export const checkout = createAsyncThunk("checkout", async (payload,{rejectWithValue})=>{
+    // console.log("heelo")
+    const key = await axios.get(`${import.meta.env.VITE_BASE_URL}/checkout/getkey`)
+    // console.log(key.data.key,"key")
+    // console.log("world")
 
-//     const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/checkout/payment`, payload)
-//     // console.log(response,"response")
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/checkout/payment`, payload)
+    // console.log(response,"response")
 
-//     try {
-//         const result = response.data.data
-//         // console.log(result)
-//        const options = {
-//             key: key.data.key, // Enter the Key ID generated from the Dashboard
-//             amount: result.order.amount * 100, // Amount is in currency sub-units. Default currency is INR. Hence, 50000 refers to 50000 paise
-//             currency: "INR",
-//             name: "Shopville",
-//             description: "Razorpay Transaction",
-//             image: "https://cdn5.vectorstock.com/i/1000x1000/84/09/sv-letter-logo-design-with-shopping-bag-icon-vector-35768409.jpg",
-//             order_id: result.order.id, //Pass the `id` obtained in the response of Step 1
-//             userID: result.userID,
-//             callback_url: "https://shopville-server.onrender.com/shopville/checkout/verify",
-//             notes: {
-//                 address: "Shopville pvt ltd"
-//             },
-//             theme: {
-//                 color: "#4c0a42"
-//             },
-//         };
-//         var razor = new window.Razorpay(options);
+    try {
+        const result = response.data.data
+        // console.log(result)
+       const options = {
+            key: key.data.key, // Enter the Key ID generated from the Dashboard
+            amount: result.order.amount * 100, // Amount is in currency sub-units. Default currency is INR. Hence, 50000 refers to 50000 paise
+            currency: "INR",
+            name: "Shopville",
+            description: "Razorpay Transaction",
+            image: "https://cdn5.vectorstock.com/i/1000x1000/84/09/sv-letter-logo-design-with-shopping-bag-icon-vector-35768409.jpg",
+            order_id: result.order.id, //Pass the `id` obtained in the response of Step 1
+            userID: result.userID,
+            callback_url: "https://shopville-server.onrender.com/shopville/checkout/verify",
+            notes: {
+                address: "Shopville pvt ltd"
+            },
+            theme: {
+                color: "#4c0a42"
+            },
+        };
+        var razor = new window.Razorpay(options);
 
-//         razor.open();
-
-
-//         // console.log(result, "result")
-//         return result;
-//     } catch (error) {
-//         console.log(error)
-//         return rejectWithValue(error)
-//     }
-// })
+        razor.open();
 
 
-export const checkout = createAsyncThunk("checkout", async (payload, { rejectWithValue }) => {
-  try {
-    // Get Razorpay key
-    const key = await axios.get(`${import.meta.env.VITE_BASE_URL}/checkout/getkey`);
+        // console.log(result, "result")
+        return result;
+    } catch (error) {
+        console.log(error)
+        return rejectWithValue(error)
+    }
+})
 
-    // Create order on backend
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/checkout/payment`, payload);
-    const result = response.data.data;
 
-    // Razorpay options
-    const options = {
-      key: key.data.key,
-      amount: result.order.amount * 100,
-      currency: "INR",
-      name: "Shopville",
-      description: "Razorpay Transaction",
-      image: "https://cdn5.vectorstock.com/i/1000x1000/84/09/sv-letter-logo-design-with-shopping-bag-icon-vector-35768409.jpg",
-      order_id: result.order.id,
-      handler: function (response) {
-        // Redirect to payment-success route with payment/order IDs
-        const paymentId = response.razorpay_payment_id;
-        const orderId = response.razorpay_order_id;
-        window.location.href = `/payment-success?payment_id=${paymentId}&order_id=${orderId}`;
-      },
-      notes: {
-        address: "Shopville pvt ltd"
-      },
-      theme: {
-        color: "#4c0a42"
-      }
-    };
-
-    const razor = new window.Razorpay(options);
-    razor.open();
-
-    return result;
-
-  } catch (error) {
-    console.error("Checkout Error:", error);
-    return rejectWithValue(error);
-  }
-});
 
 
 

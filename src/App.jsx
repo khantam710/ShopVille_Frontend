@@ -60,6 +60,7 @@ clevertap.init('WWW-869-947Z', 'eu1')
           <Route path='/products' element={<ProductList />} />
           <Route path='/products/:category' element={<ProductList />} />
           <Route path='/product/:prodID' element={<SingleProduct/>} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
           {/* <Route path='/products' element={user !== null && Object.keys(user).length !== 0 ? <ProductList /> : <Navigate to='/' />} />
           <Route path='/products/:category' element={user !== null && Object.keys(user).length !== 0 ? <ProductList /> : <Navigate to='/' />} />
           <Route path='/product/:prodID' element={user !== null && Object.keys(user).length !== 0 ? <SingleProduct /> : <Navigate to='/' />} /> */}

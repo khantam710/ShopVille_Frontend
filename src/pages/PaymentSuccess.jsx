@@ -1,18 +1,14 @@
-// src/pages/PaymentSuccess.jsx
-
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 const PaymentSuccess = () => {
   const query = new URLSearchParams(useLocation().search);
-  const paymentId = query.get('payment_id');
-  const orderId = query.get('order_id');
+  const reference = query.get('reference');
 
   return (
     <div style={{ padding: 40 }}>
       <h2>🎉 Payment Successful!</h2>
-      <p>Payment ID: {paymentId}</p>
-      <p>Order ID: {orderId}</p>
+      <p>Payment Reference: {reference}</p>
     </div>
   );
 };

@@ -138,11 +138,25 @@ const Wishlist = () => {
         dispatch(getwishByUser(userID))
     }, [userID])
 
-    const deleteHandler = (item) => {
-        // console.log(item.wish._id)
-        dispatch(deletewish(item._id))
-    }
-    console.log(wish.length!==0)
+  const deleteHandler = (item) => {
+  // Step 1: Dispatch the Redux action
+  dispatch(deletewish(item._id));
+
+  // Step 2: Trigger CleverTap event
+  if (window.clevertap) {
+    window.clevertap.event.push("Wishlist Removed", {
+      product_id: item.prodID,
+      name: item.title || item.name || 'N/A',
+      price: item.price,
+      image: item.image,
+      category: item.category || 'N/A',
+      url: window.location.href
+    });
+    console.log("CleverTap: Wishlist Removed event sent");
+  }
+};
+console.log(wish.length!==0)
+
     return (
         <>
             <Navbar />

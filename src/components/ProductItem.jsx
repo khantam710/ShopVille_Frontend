@@ -144,6 +144,20 @@ const ProductItem = ({ item }) => {
                 dispatch(addwish(payload))
                 notifyOne()
             }
+
+ // ✅ Trigger CleverTap "Wishlist Added" event
+      if (window.clevertap) {
+        window.clevertap.event.push("Wishlist Added", {
+          product_id: item._id,
+          name: item.title || item.name,
+          price: item.price,
+          image: item.image,
+          category: item.category || 'N/A',
+          url: window.location.href
+        });
+        console.log("CleverTap: Wishlist Added event sent");
+      }
+
             else{
                 notifyTwo()
             }

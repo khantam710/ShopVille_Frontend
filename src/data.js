@@ -17,10 +17,10 @@ export const sliderItems= [
   },
   {
     id: 4,
-    img: "https://i.ibb.co/r08qDFf/young-attractive-woman-shirt-sunglasses-removebg-preview.png",
+    img: "https://i.ibb.co/cXFnLLV/3.png",
     title: "SUMMER SALE",
     desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
-    bg: "F0F0F0",
+    bg: "FFD0D0",
   },
 ];
 

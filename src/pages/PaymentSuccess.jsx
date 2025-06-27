@@ -83,7 +83,7 @@ const PaymentSuccess = () => {
       email: user?.email
     });
 
-    console.log("✅ CleverTap Charged event fired:", {
+    console.log("CleverTap Charged event fired:", {
       value: cartTotal,
       payment_reference: reference,
       items

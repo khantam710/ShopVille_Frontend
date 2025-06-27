@@ -195,7 +195,46 @@ const Cart = () => {
               <SummaryItemPrice>₹ {cartTotal}</SummaryItemPrice>
             </SummaryItem>
 
-            <SummaryButton onClick={() => dispatch(checkout(payload)) }>ORDER NOW</SummaryButton>
+{/*             <SummaryButton onClick={() => dispatch(checkout(payload)) }>ORDER NOW</SummaryButton> */}
+            <SummaryButton
+  onClick={() => {
+    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+    // Backup to localStorage (in case needed on payment-success)
+    localStorage.setItem('lastCart', JSON.stringify(cartItems));
+    localStorage.setItem('lastCartTotal', cartTotal);
+
+    const items = cartItems.map(item => ({
+      id: item._id,
+      title: item.title || item.name,
+      price: item.price,
+      quantity: item.quantity || 1
+    }));
+
+    if (window.clevertap && items.length > 0) {
+      window.clevertap.event.push("Charged", {
+        value: cartTotal,
+        items,
+        user_id: user?._id,
+        name: user?.name,
+        email: user?.email
+      });
+
+      console.log("✅ CleverTap Charged event fired on ORDER NOW", {
+        value: cartTotal,
+        items
+      });
+    } else {
+      console.warn("⚠️ Could not fire Charged event: Empty cart or CleverTap not loaded");
+    }
+
+    // Dispatch checkout action
+    dispatch(checkout(payload));
+  }}
+>
+  ORDER NOW
+</SummaryButton>
+
 
           </Summary>
         </Bottom>

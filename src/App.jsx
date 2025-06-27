@@ -33,19 +33,19 @@ function App() {
   clevertap.init('WWW-869-947Z', 'eu1');
 
 // Set CleverTap notification callback
-useEffect(() => {
-  if (typeof window !== 'undefined' && window.clevertap) {
-    // Avoid overwriting if already set
-    if (!clevertap.notificationCallback) {
-      clevertap.notificationCallback = function(msg) {
-        clevertap.raiseNotificationViewed();
-        clevertap.raiseNotificationClicked();
-        console.log("Notification received:", JSON.stringify(msg));
-      };
-      console.log("✅ CleverTap notificationCallback registered");
-    }
-  }
-}, []);
+// useEffect(() => {
+//   if (typeof window !== 'undefined' && window.clevertap) {
+//     // Avoid overwriting if already set
+//     if (!clevertap.notificationCallback) {
+//       clevertap.notificationCallback = function(msg) {
+//         clevertap.raiseNotificationViewed();
+//         clevertap.raiseNotificationClicked();
+//         console.log("Notification received:", JSON.stringify(msg));
+//       };
+//       console.log("✅ CleverTap notificationCallback registered");
+//     }
+//   }
+// }, []);
 
 
   //  Register Service Worker (once on mount)

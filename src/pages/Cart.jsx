@@ -196,44 +196,50 @@ const Cart = () => {
             </SummaryItem>
 
 {/*             <SummaryButton onClick={() => dispatch(checkout(payload)) }>ORDER NOW</SummaryButton> */}
-           <SummaryButton
+          <SummaryButton
   onClick={() => {
     const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
+    // Backup for Payment Success page (optional)
     localStorage.setItem('lastCart', JSON.stringify(cartItems));
     localStorage.setItem('lastCartTotal', cartTotal);
 
     const items = cartItems.map(item => ({
-      title: item.title || item.name, // required
-      price: item.price,              // required
-      quantity: item.quantity || 1    // required
+      "Product ID": item._id,
+      "Name": item.title || item.name,
+      "Category": item.category || "Uncategorized",
+      "Price": item.price,
+      "Quantity": item.quantity || 1,
+      "Color": item.color || "N/A",
+      "Size": item.size || "N/A",
+      "Image": item.image || ""
     }));
 
     if (window.clevertap && items.length > 0) {
-      window.clevertap.event.push("Charged",
-        {
-          amount: cartTotal,
-          transaction_id: "pay_" + Date.now(), // example unique ID
-          user_id: user?._id,
-          name: user?.name,
-          email: user?.email
-        },
-        items
-      );
+      window.clevertap.event.push("Charged", {
+        "Amount": cartTotal,
+        "Payment mode": "Online",
+        "Charged ID": `pay_${Date.now()}`,
+        "Items": items
+      });
 
-      console.log("✅ CleverTap Charged event fired", {
-        amount: cartTotal,
-        items
+      console.log("✅ CleverTap Charged event fired:", {
+        "Amount": cartTotal,
+        "Payment mode": "Online",
+        "Charged ID": `pay_${Date.now()}`,
+        "Items": items
       });
     } else {
       console.warn("⚠️ Could not fire Charged event: Empty cart or CleverTap not loaded");
     }
 
+    // Proceed with checkout
     dispatch(checkout(payload));
   }}
 >
   ORDER NOW
 </SummaryButton>
+
 
 
 

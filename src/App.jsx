@@ -21,18 +21,34 @@ function App() {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user.currentUser)
 
-  // 👉 Fetch cart and wishlist
+  //  Fetch cart and wishlist
   useEffect(() => {
     dispatch(getwishByUser(user?._id))
     dispatch(getcart(user?._id))
   }, [user])
 
-  // 👉 CleverTap initialization
+  //  CleverTap initialization
   clevertap.privacy.push({ optOut: false });
   clevertap.privacy.push({ useIP: true });
   clevertap.init('WWW-869-947Z', 'eu1');
 
-  // ✅ Register Service Worker (once on mount)
+// Set CleverTap notification callback
+useEffect(() => {
+  if (typeof window !== 'undefined' && window.clevertap) {
+    // Avoid overwriting if already set
+    if (!clevertap.notificationCallback) {
+      clevertap.notificationCallback = function(msg) {
+        clevertap.raiseNotificationViewed();
+        clevertap.raiseNotificationClicked();
+        console.log("Notification received:", JSON.stringify(msg));
+      };
+      console.log("✅ CleverTap notificationCallback registered");
+    }
+  }
+}, []);
+
+
+  //  Register Service Worker (once on mount)
   useEffect(() => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.ready
@@ -54,7 +70,7 @@ function App() {
     }
   }, []);
 
-  // 👉 On User Login, push to CleverTap + show push prompt
+  //  On User Login, push to CleverTap + show push prompt
   useEffect(() => {
     if (user && Object.keys(user).length > 0 && typeof window !== 'undefined' && window.clevertap) {
       window.clevertap.onUserLogin && window.clevertap.onUserLogin.push({
@@ -69,7 +85,7 @@ function App() {
       window.clevertap.event && window.clevertap.event.push("User Logged In");
       console.log("CleverTap onUserLogin triggered");
 
-      // ✅ Show push permission prompt
+      //  Show push permission prompt
       clevertap.notifications.push({
         titleText: "Would you like to receive Push Notifications?",
         bodyText: "We promise to only send you relevant content and give you updates on your transactions",

@@ -200,45 +200,40 @@ const Cart = () => {
   onClick={() => {
     const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-    // Backup for Payment Success page (optional)
+    // Backup to localStorage for PaymentSuccess page
     localStorage.setItem('lastCart', JSON.stringify(cartItems));
     localStorage.setItem('lastCartTotal', cartTotal);
 
+    // Format the Items array for Charged event
     const items = cartItems.map(item => ({
-      "Product ID": item._id,
-      "Name": item.title || item.name,
-      "Category": item.category || "Uncategorized",
-      "Price": item.price,
-      "Quantity": item.quantity || 1,
-      "Color": item.color || "N/A",
-      "Size": item.size || "N/A",
-      "Image": item.image || ""
+      "Product Name": item.title || item.name,
+      "Category": item.category || "General",
+      "Quantity": item.quantity || 1
     }));
 
     if (window.clevertap && items.length > 0) {
       window.clevertap.event.push("Charged", {
         "Amount": cartTotal,
-        "Payment mode": "Online",
-        "Charged ID": `pay_${Date.now()}`,
+        "Payment Mode": "Online",
         "Items": items
       });
 
-      console.log("✅ CleverTap Charged event fired:", {
-        "Amount": cartTotal,
-        "Payment mode": "Online",
-        "Charged ID": `pay_${Date.now()}`,
-        "Items": items
+      console.log("✅ CleverTap Charged event fired on ORDER NOW", {
+        Amount: cartTotal,
+        "Payment Mode": "Online",
+        Items: items
       });
     } else {
       console.warn("⚠️ Could not fire Charged event: Empty cart or CleverTap not loaded");
     }
 
-    // Proceed with checkout
+    // Dispatch checkout action
     dispatch(checkout(payload));
   }}
 >
   ORDER NOW
 </SummaryButton>
+
 
 
 

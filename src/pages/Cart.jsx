@@ -196,44 +196,45 @@ const Cart = () => {
             </SummaryItem>
 
 {/*             <SummaryButton onClick={() => dispatch(checkout(payload)) }>ORDER NOW</SummaryButton> */}
-            <SummaryButton
+           <SummaryButton
   onClick={() => {
     const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-    // Backup to localStorage (in case needed on payment-success)
     localStorage.setItem('lastCart', JSON.stringify(cartItems));
     localStorage.setItem('lastCartTotal', cartTotal);
 
     const items = cartItems.map(item => ({
-      id: item._id,
-      title: item.title || item.name,
-      price: item.price,
-      quantity: item.quantity || 1
+      title: item.title || item.name, // required
+      price: item.price,              // required
+      quantity: item.quantity || 1    // required
     }));
 
     if (window.clevertap && items.length > 0) {
-      window.clevertap.event.push("Charged", {
-        value: cartTotal,
-        items,
-        user_id: user?._id,
-        name: user?.name,
-        email: user?.email
-      });
+      window.clevertap.event.push("Charged",
+        {
+          amount: cartTotal,
+          transaction_id: "pay_" + Date.now(), // example unique ID
+          user_id: user?._id,
+          name: user?.name,
+          email: user?.email
+        },
+        items
+      );
 
-      console.log("✅ CleverTap Charged event fired on ORDER NOW", {
-        value: cartTotal,
+      console.log("✅ CleverTap Charged event fired", {
+        amount: cartTotal,
         items
       });
     } else {
       console.warn("⚠️ Could not fire Charged event: Empty cart or CleverTap not loaded");
     }
 
-    // Dispatch checkout action
     dispatch(checkout(payload));
   }}
 >
   ORDER NOW
 </SummaryButton>
+
 
 
           </Summary>

@@ -10,8 +10,8 @@ import Newsletter from '../components/Newsletter';
 import Footer from '../components/Footer';
 
 const Home = () => {
-  // const location = useLocation();
-  // const user = useSelector(state => state.user.currentUser);
+  const location = useLocation();
+  const user = useSelector(state => state.user.currentUser);
 
   // useEffect(() => {
   //   if (location.pathname === '/home' && window.clevertap) {
@@ -24,24 +24,24 @@ const Home = () => {
   //   }
   // }, [location]);
 
-  // useEffect(() => {
-  //   if (
-  //     location.pathname === '/home' &&
-  //     window.clevertap &&
-  //     user && user._id
-  //   ) {
-  //     const timeout = setTimeout(() => {
-  //       window.clevertap.event.push("Page Visit Event", {
-  //         page: "Home",
-  //         title: document.title,
-  //         url: window.location.href
-  //       });
-  //       console.log("✅ CleverTap: Page Visit Event triggered after user login");
-  //     }, 500);
+  useEffect(() => {
+    if (
+      location.pathname === '/home' &&
+      window.clevertap &&
+      user && user._id
+    ) {
+      const timeout = setTimeout(() => {
+        window.clevertap.event.push("Page Visit Event", {
+          page: "Home",
+          title: document.title,
+          url: window.location.href
+        });
+        console.log("✅ CleverTap: Page Visit Event triggered after user login");
+      }, 500);
   
-  //     return () => clearTimeout(timeout);
-  //   }
-  // }, [location, user]);
+      return () => clearTimeout(timeout);
+    }
+  }, [location, user]);
 
   return (
     <div>

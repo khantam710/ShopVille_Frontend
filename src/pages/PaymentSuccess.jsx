@@ -102,6 +102,8 @@
 
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const PaymentSuccess = () => {
   const query = new URLSearchParams(useLocation().search);
@@ -151,10 +153,52 @@ const PaymentSuccess = () => {
   }, []);
 
   return (
-    <div style={{ padding: 40 }}>
-      <h2>🎉 Payment Successful!</h2>
-      <p>Payment Reference: {reference}</p>
+   <Navbar />
+
+    <div style={{
+  minHeight: '80vh',
+  backgroundColor: '#f3faf7',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '40px 20px'
+}}>
+  <div style={{
+    background: 'white',
+    borderRadius: '16px',
+    boxShadow: '0 6px 18px rgba(0,0,0,0.1)',
+    padding: '40px 30px',
+    maxWidth: '520px',
+    width: '100%',
+    textAlign: 'center'
+  }}>
+    <div style={{
+      fontSize: '60px',
+      color: '#2ecc71',
+      marginBottom: '20px'
+    }}>
+      ✅
     </div>
+    <h2 style={{ fontSize: '28px', marginBottom: '10px', color: '#333' }}>
+      Payment Successful!
+    </h2>
+    <p style={{ fontSize: '16px', color: '#666', marginBottom: '20px' }}>
+      Thank you for your order. Your payment has been processed successfully.
+    </p>
+    <div style={{
+      backgroundColor: '#f9f9f9',
+      border: '1px solid #e0e0e0',
+      borderRadius: '8px',
+      padding: '15px',
+      wordBreak: 'break-word'
+    }}>
+      <strong>Payment Reference:</strong><br />
+      <span style={{ color: '#444' }}>{reference}</span>
+    </div>
+  </div>
+</div>
+
+  <Footer/>
   );
 };
 

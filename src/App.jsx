@@ -73,7 +73,7 @@ function App() {
   //  On User Login, push to CleverTap + show push prompt
   useEffect(() => {
     if (user && Object.keys(user).length > 0 && typeof window !== 'undefined' && window.clevertap) {
-      window.clevertap.onUserLogin && window.clevertap.onUserLogin.push({
+      window.clevertap.onUserLogin({
         "Site": {
           "Name": user.name || "",
           "Identity": user._id || "",
@@ -82,12 +82,12 @@ function App() {
         }
       });
 
-      window.clevertap.event && window.clevertap.event.push("User Logged In", {
-      page: window.location.pathname,
-      title: document.title,
-      url: window.location.href
-    });
-    console.log("CleverTap onUserLogin + User Logged In event triggered");
+    //   window.clevertap.event && window.clevertap.event.push("User Logged In", {
+    //   page: window.location.pathname,
+    //   title: document.title,
+    //   url: window.location.href
+    // });
+    // console.log("CleverTap onUserLogin + User Logged In event triggered");
 
       //  Show push permission prompt
       clevertap.notifications.push({

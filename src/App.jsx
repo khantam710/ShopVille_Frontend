@@ -73,7 +73,7 @@ function App() {
   //  On User Login, push to CleverTap + show push prompt
   useEffect(() => {
     if (user && Object.keys(user).length > 0 && typeof window !== 'undefined' && window.clevertap) {
-      window.clevertap.onUserLogin({
+      window.clevertap.onUserLogin && window.clevertap.onUserLogin.push({
         "Site": {
           "Name": user.name || "",
           "Identity": user._id || "",

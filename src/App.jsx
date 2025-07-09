@@ -82,8 +82,12 @@ function App() {
         }
       });
 
-      window.clevertap.event && window.clevertap.event.push("User Logged In");
-      console.log("CleverTap onUserLogin triggered");
+      window.clevertap.event && window.clevertap.event.push("User Logged In", {
+      page: window.location.pathname,
+      title: document.title,
+      url: window.location.href
+    });
+    console.log("CleverTap onUserLogin + User Logged In event triggered");
 
       //  Show push permission prompt
       clevertap.notifications.push({

@@ -68,20 +68,42 @@ const Button = styled.button`
 const Newsletter = () => {
     const [email, setEmail] = useState('');
 
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     if (!email) return;
+
+    //     // Fire CleverTap event
+    //     if (window.clevertap) {
+    //         window.clevertap.event.push("Newsletter Signup", {
+    //             Email: email
+    //         });
+    //     }
+
+    //     alert('Thanks for subscribing!');
+    //     setEmail('');
+    // };
+
     const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!email) return;
+    e.preventDefault();
+    if (!email) return;
 
-        // Fire CleverTap event
-        if (window.clevertap) {
-            window.clevertap.event.push("Newsletter Signup", {
-                Email: email
-            });
-        }
+    if (window.clevertap) {
+        // Update user profile and enable email messaging
+        window.clevertap.profile.push({
+            "Email": email,
+            "MSG-email": true
+        });
 
-        alert('Thanks for subscribing!');
-        setEmail('');
-    };
+        // Optional: Track a separate event for signup
+        window.clevertap.event.push("Newsletter Signup", {
+            Email: email
+        });
+    }
+
+    alert('Thanks for subscribing!');
+    setEmail('');
+};
+
 
     return (
         <Container>

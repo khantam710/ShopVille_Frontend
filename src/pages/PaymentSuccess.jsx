@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+// import Navbar from '../components/Navbar';
+// import Footer from '../components/Footer';
 
 const PaymentSuccess = () => {
   const query = new URLSearchParams(useLocation().search);
@@ -51,12 +51,12 @@ const PaymentSuccess = () => {
   }, []);
 
   return (
-   <Navbar />
+  
     <div style={{ padding: 40 }}>
       <h2>🎉 Payment Successful!</h2>
       <p>Payment Reference: {reference}</p>
     </div>
-  <Footer/>
+ 
   );
 };
 

@@ -29,7 +29,7 @@ const ScrollingTextWrapper = styled.div`
 
 const Announcement = () => {
   return (
-    <div>
+    <div id="announcement-wrapper">
       <Container>
         <ScrollingTextWrapper>
           Super Deal!! Free Shipping on Orders Over $50
